@@ -27,7 +27,7 @@ async def print_help():
     print(colored("Type " + colored("'!help'", "light_yellow") + " to print this message again.", "white"))
     print(colored("Type " + colored("'!load <chat number>'", "light_yellow") + " to load a chat.", "white"))
     print(colored("Type " + colored("'!retry'", "light_yellow") + " to retry the last prompt.", "white"))
-    print(colored("Type " + colored("'!load_file <file name> <question>'", "light_yellow") + " to load a file and ask a question about it.", "white"))
+    print(colored("Type " + colored("'!file <file name> <question>'", "light_yellow") + " to load a file and ask a question about it.", "white"))
 
 
 
@@ -68,7 +68,7 @@ async def main():
             # Remove the last prompt from the history.
             await remove_last_messages(session_id)
             await send_prompt(last_prompt, session_id)
-        elif user_input == "!load_file":
+        elif user_input == "!file":
             # Get the file name and question from the user input.
             file_name = user_input.split(" ")[1]
             question = user_input.split(" ")[2:]
