@@ -11,11 +11,31 @@ async def print_header(session_id = -1):
         ascii_art = f.read()
     # Print the ascii art.
     print(colored(f"\033c{ascii_art}", "white"))
-    print(colored("\nWelcome to the Yui-GPT CLI!", "white"))
+    # Get version from pyproject.toml.
+    with open("pyproject.toml", "r") as f:
+        version = f.read()
+    version = version.split("version = ")[1]
+    version = version.split("\n")[0].replace("\"", "")
+    print(colored(f"\nWelcome to the Yui-GPT CLI {version}!", "white"))
     print(colored("This program will interface with the text-generation-webui API to generate text.", "white"))
-    print(colored("It was designed by Geoffery10.\n", "white"))
+    # Load author names from pyproject.toml.
+    with open("pyproject.toml", "r") as f:
+        authors = f.read()
+    authors = authors.split("authors = [")[1]
+    authors = authors.split("]")[0]
+    authors = authors.replace("\"", "").replace("name = ", "").replace("\n", "").replace(" ", "").replace("{", "").split(",")
+    # Remove emails from authors.
+    for author in authors:
+        if "@" in author or "email" in author:
+            authors.remove(author)
+    
+    # Print the authors.
+    print(colored("Authors:", "white"))
+    for author in authors:
+        print(colored(f" - {author}", "white"))
+    # Print the session ID.
     if session_id != -1:
-        print(colored(f"Session ID: {session_id}", "white"))
+        print(colored(f"Session ID: {session_id}\n", "white"))
     await print_help()
     print("")
 
@@ -25,11 +45,10 @@ async def print_help():
     print(colored("Type " + colored("'!quit'", "light_yellow") + " to exit the program.", "white"))
     print(colored("Type " + colored("'!clear'", "light_yellow") + " to clear the chat history.", "white"))
     print(colored("Type " + colored("'!history'", "light_yellow") + " to print the chat history.", "white"))
-    print(colored("Type " + colored("'!help'", "light_yellow") + " to print this message again.", "white"))
     print(colored("Type " + colored("'!load <chat number>'", "light_yellow") + " to load a chat.", "white"))
     print(colored("Type " + colored("'!retry'", "light_yellow") + " to retry the last prompt.", "white"))
     print(colored("Type " + colored("'!file <file name> <question>'", "light_yellow") + " to load a file and ask a question about it.", "white"))
-
+    print(colored("Type " + colored("'!help'", "light_yellow") + " to print this message again.", "white"))
 
 
 async def main():

@@ -1,12 +1,11 @@
 
 [project]
 name = "Yui_GPT_CLI"
-version = "0.1.0"
+version = "0.1.1"
 description = "AI CLI Tool"
 authors = [
     {name = "Geoffery10", email = "powellgeoffery@gmail.com"},
-    {name = "NonlinearFruit", email = "1123benji5813@gmail.com"},
-    {name = "Yui-GPT", email = ""}
+    {name = "NonlinearFruit", email = "1123benji5813@gmail.com"}
 ]
 dependencies = [
     "termcolor>=2.3.0",
