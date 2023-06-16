@@ -5,7 +5,7 @@ version = "0.1.0"
 description = "AI CLI Tool"
 authors = [
     {name = "Geoffery10", email = "powellgeoffery@gmail.com"},
-    {name = "Ben Bolen", email = "Ben.Bolen@samaritanministries.org"},
+    {name = "NonlinearFruit", email = "1123benji5813@gmail.com"},
     {name = "Yui-GPT", email = ""}
 ]
 dependencies = [
