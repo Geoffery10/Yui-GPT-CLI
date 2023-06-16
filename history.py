@@ -73,6 +73,8 @@ async def chat_exists(id):
     # Check if chat file exists.
     import os
     chats = os.listdir("./chats/")
+    if not chats:
+        return False
     chats = [chat for chat in chats if chat.endswith(".txt")]
     if f"chat_{id}.txt" in chats:
         return True
