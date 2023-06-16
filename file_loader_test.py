@@ -2,12 +2,8 @@ import tempfile
 from unittest.mock import patch, mock_open
 import pytest
 from file_loader import load_file, load_local_file, load_internet_file
-
-@pytest.mark.asyncio
-async def test_stuff():
-    pass
-
 import os
+
 
 @pytest.mark.asyncio
 async def test_load_local_file():
