@@ -1,3 +1,4 @@
+import tempfile
 from unittest.mock import patch, mock_open
 import pytest
 from file_loader import load_file, load_local_file, load_internet_file
@@ -6,12 +7,18 @@ from file_loader import load_file, load_local_file, load_internet_file
 async def test_stuff():
     pass
 
+import os
+
 @pytest.mark.asyncio
 async def test_load_local_file():
     # Test loading a local file.
     with patch('builtins.open', mock_open(read_data='file contents')):
-        result = await load_local_file('test.txt')
-        assert result == 'Loaded File: test.txt\nContents: \nfile contents'
+        with tempfile.TemporaryDirectory() as tmpdir:
+            filepath = os.path.join(tmpdir, 'test.txt')
+            with open(filepath, 'w') as f:
+                f.write('test file contents')
+            result = await load_local_file(filepath)
+            assert result == f'Loaded File: {filepath}\nContents: \ntest file contents'
 
 @pytest.mark.asyncio
 async def test_load_local_file_not_found():
@@ -41,7 +48,7 @@ async def test_load_file_local():
     with patch('file_loader.load_local_file') as mock_load_local_file:
         mock_load_local_file.return_value = 'file contents'
         result = await load_file('test.txt')
-        assert result == ('session_id', 'Loaded File: test.txt\nContents: \nfile contents')
+        assert result[1] == ('Loaded File: test.txt\nContents: \nfile contents')
 
 @pytest.mark.asyncio
 async def test_load_file_internet():

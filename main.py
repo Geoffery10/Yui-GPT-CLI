@@ -127,5 +127,8 @@ async def code_block(reply):
 if __name__ == "__main__":
     # Clear the terminal.
     print("\033c")
+    # Make chats directory if it doesn't exist.
+    if not os.path.exists("chats"):
+        os.mkdir("chats")
     asyncio.run(main())
         
