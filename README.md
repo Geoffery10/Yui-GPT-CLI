@@ -1,5 +1,7 @@
 # Yui-GPT CLI
 
+[![Pipeline](https://img.shields.io/github/actions/workflow/status/Geoffery10/Yui-GPT-CLI/test.yml)](https://github.com/Geoffery10/Yui-GPT-CLI/actions/workflows/test.yml)
+
 Yui-GPT CLI is a command-line interface tool that uses AI throught the [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) api to generate text. 
 
 ## Installation
