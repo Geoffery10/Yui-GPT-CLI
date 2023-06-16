@@ -87,7 +87,7 @@ async def create_history():
     new_chat.close()
     global chat_name
     chat_name = f"./chats/chat_{id}.txt"
-    
+    print(f"Created chat_{id}.txt")
     return id
 
 async def load_chat(id = 0):

@@ -1,4 +1,5 @@
 
+import os
 from history import *
 from api import *
 import asyncio
@@ -68,19 +69,20 @@ async def main():
             # Remove the last prompt from the history.
             await remove_last_messages(session_id)
             await send_prompt(last_prompt, session_id)
-        elif user_input == "!file":
+        elif "!file" in user_input:
             # Get the file name and question from the user input.
             file_name = user_input.split(" ")[1]
             question = user_input.split(" ")[2:]
             question = " ".join(question)
             # Load the file.
-            session_id_temp = await load_file(file_name)
+            session_id_temp, file_contents = await load_file(file_name)
             if session_id_temp != -1:
                 session_id = session_id_temp
-                await print_header(session_id)
+                # await print_header(session_id)
                 print(colored(f"Loaded file {file_name}.", "yellow"))
                 # Send the question to the API.
-                await send_prompt(question, session_id)
+                final_question = f"{file_contents}\n### Question\n{question}\n"
+                await send_prompt(final_question, session_id)
             else:
                 print(colored("Error: File not found.", "red"))
         elif user_input == "": # Empty input.
@@ -90,17 +92,16 @@ async def main():
             
 
 async def load_file(path):
-    # Load the file.
-    try:
-        with open(path, "r") as f:
-            file_contents = f.read()
-    except:
+    # Check if the file exists.
+    if not os.path.exists(path):
         print(colored("Error: File not found.", "red"))
         return -1
+    # Load the file.
+    with open(path, 'r') as file:
+        file_contents = file.read()
     # Start a new chat.
     session_id = await create_history()
-    await add_to_history(file_contents, "")
-    return session_id
+    return session_id, file_contents
     
 
 async def send_prompt(user_input, session_id):
@@ -115,16 +116,17 @@ async def send_prompt(user_input, session_id):
     # Print the response.
     if '```' in reply: # Response has a code block.
         # Color everything in between the ``` cyan.
-        split_reply = reply.split('```')
-        for i in range(len(split_reply)):
+        split_reply = []
+        for i, s in enumerate(reply.split('```')):
             if i % 2 == 1:
-                split_reply[i] = colored(split_reply[i], "cyan")
+                s = colored(s, "cyan")
+            split_reply.append(s)
         reply = '```'.join(split_reply)
         # Remove the ``` from the reply. and empty lines.
-        print(reply.replace('```', '').replace('\n\n', '\n'))
+        reply = reply.replace('```', '').replace('\n\n', '\n')
     else:
         print(colored(reply, "white"))
-
+        
 
 if __name__ == "__main__":
     # Clear the terminal.
