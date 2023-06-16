@@ -1,4 +1,3 @@
-
 import os
 from history import *
 from api import *
@@ -99,6 +98,8 @@ async def load_file(path):
     # Load the file.
     with open(path, 'r') as file:
         file_contents = file.read()
+
+    file_contents = "Loaded File: " + path + "\nContents: \n" + file_contents
     # Start a new chat.
     session_id = await create_history()
     return session_id, file_contents
@@ -124,6 +125,7 @@ async def send_prompt(user_input, session_id):
         reply = '```'.join(split_reply)
         # Remove the ``` from the reply. and empty lines.
         reply = reply.replace('```', '').replace('\n\n', '\n')
+        print(reply)
     else:
         print(colored(reply, "white"))
         
