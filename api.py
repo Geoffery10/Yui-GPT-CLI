@@ -2,9 +2,6 @@ import json
 import aiohttp
 import asyncio
 
-url = "http://192.168.0.186:7862/run/textgen"
-
-
 async def api_call(history, prompt):
     # Load config file
     with open('server_info.json', 'r') as f:
