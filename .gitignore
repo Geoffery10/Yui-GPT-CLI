@@ -3,4 +3,4 @@ __pycache__/
 logs/
 log*.txt
 Thumbs.db
-xvba_debug.log
+xvba_debug.log.pdm-python

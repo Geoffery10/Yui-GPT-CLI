@@ -3,6 +3,7 @@ from history import *
 from api import *
 import asyncio
 from termcolor import colored
+from file_loader import load_file
 
 async def print_header(session_id = -1):
     # Load ascii art from file.
@@ -88,21 +89,7 @@ async def main():
             continue
         else:
             await send_prompt(user_input, session_id)
-            
-
-async def load_file(path):
-    # Check if the file exists.
-    if not os.path.exists(path):
-        print(colored("Error: File not found.", "red"))
-        return -1
-    # Load the file.
-    with open(path, 'r') as file:
-        file_contents = file.read()
-
-    file_contents = "Loaded File: " + path + "\nContents: \n" + file_contents
-    # Start a new chat.
-    session_id = await create_history()
-    return session_id, file_contents
+        
     
 
 async def send_prompt(user_input, session_id):
@@ -116,18 +103,25 @@ async def send_prompt(user_input, session_id):
     await add_to_history(user_input, reply)
     # Print the response.
     if '```' in reply: # Response has a code block.
-        # Color everything in between the ``` cyan.
-        split_reply = []
-        for i, s in enumerate(reply.split('```')):
-            if i % 2 == 1:
-                s = colored(s, "cyan")
-            split_reply.append(s)
-        reply = '```'.join(split_reply)
-        # Remove the ``` from the reply. and empty lines.
-        reply = reply.replace('```', '').replace('\n\n', '\n')
+        reply = await code_block(reply)
         print(reply)
     else:
         print(colored(reply, "white"))
+
+
+async def code_block(reply):
+    # Format code blocks returned by the API.
+    # Color everything in between the ``` cyan.
+    split_reply = []
+    for i, s in enumerate(reply.split('```')):
+        if i % 2 == 1:
+            s = colored(s, "cyan")
+        split_reply.append(s)
+    reply = '```'.join(split_reply)
+    # Remove the ``` from the reply. and empty lines.
+    reply = reply.replace('```', '').replace('\n\n', '\n')
+    return reply
+
         
 
 if __name__ == "__main__":

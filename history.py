@@ -22,7 +22,7 @@ async def add_to_history(prompt="", response=""):
     global chat_name
     # Check if chat file exists.
     try:
-        history_file = open(chat_name, "r")
+        history_file = open(chat_name, "r", encoding="utf-8")
         history_file.close()
     except:
         await create_history()
@@ -30,9 +30,9 @@ async def add_to_history(prompt="", response=""):
     if prompt == "" or response == "" or prompt == None or response == None:
         print("Error: Prompt or response is empty.")
         return
-    history_file = open(chat_name, "a")
+    history_file = open(chat_name, "a", encoding="utf-8")
     history_file.write("### Human\n")
-    history_file.write(prompt + "\n")
+    history_file.write(str(prompt) + "\n")
     if response != "":
         history_file.write("### Assistant\n")
         history_file.write(response + "\n")
