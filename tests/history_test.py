@@ -53,7 +53,9 @@ class TestGetHistory:
     @pytest.mark.asyncio
     async def test_fails_when_file_is_not_readable(self):
         with patch('history.chat_exists') as mock_exists:
-            id = '14'
-            mock_exists.return_value = True
-            result = await get_history(id)
-            assert "Couldn't read chat history." == result
+            with patch('builtins.open') as mock_open:
+                id = '14'
+                mock_exists.return_value = True
+                mock_open.side_effect = Exception('Failed to load')
+                result = await get_history(id)
+                assert "Couldn't read chat history." == result
