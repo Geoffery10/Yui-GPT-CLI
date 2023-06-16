@@ -18,14 +18,14 @@ async def get_history(id):
         history = "No chat history in this thread yet."
     return history
 
-async def add_to_history(prompt="", response=""):
+async def add_to_history(prompt="", response="", id = -1):
     global chat_name
-    # Check if chat file exists.
-    try:
-        history_file = open(chat_name, "r", encoding="utf-8")
-        history_file.close()
-    except:
-        await create_history()
+    if await chat_exists(id):
+        chat_name = f"./chats/chat_{id}.txt"
+    else:
+        # Create a new chat file.
+        id = await create_history()
+        chat_name = f"./chats/chat_{id}.txt"
     # Add the prompt and response to the chat file.
     if prompt == "" or response == "" or prompt == None or response == None:
         print("Error: Prompt or response is empty.")
@@ -37,7 +37,7 @@ async def add_to_history(prompt="", response=""):
         history_file.write("### Assistant\n")
         history_file.write(response + "\n")
         history_file.close()
-    return
+    return id
 
 async def clear_history():
     # Starts a new chat file.
@@ -89,7 +89,6 @@ async def create_history():
     new_chat.close()
     global chat_name
     chat_name = f"./chats/chat_{id}.txt"
-    print(f"Created chat_{id}.txt")
     return id
 
 async def load_chat(id = 0):

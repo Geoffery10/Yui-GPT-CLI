@@ -87,7 +87,7 @@ async def main():
             last_prompt = await get_last_human_message(session_id)
             # Remove the last prompt from the history.
             await remove_last_messages(session_id)
-            await send_prompt(last_prompt, session_id)
+            session_id = await send_prompt(last_prompt, session_id)
         elif "!file" in user_input:
             # Get the file name and question from the user input.
             file_name = user_input.split(" ")[1]
@@ -101,13 +101,13 @@ async def main():
                 print(colored(f"Loaded file {file_name}.", "yellow"))
                 # Send the question to the API.
                 final_question = f"{file_contents}\n### Question\n{question}\n"
-                await send_prompt(final_question, session_id)
+                session_id = await send_prompt(final_question, session_id)
             else:
                 print(colored("Error: File not found.", "red"))
         elif user_input == "": # Empty input.
             continue
         else:
-            await send_prompt(user_input, session_id)
+            session_id = await send_prompt(user_input, session_id)
         
     
 
@@ -119,13 +119,14 @@ async def send_prompt(user_input, session_id):
     prompt = f"{history}\n### Human\n{user_input}\n### Assistant\n"
     reply = await api_call(history, prompt) # Returns a string.
     # Add the prompt and response to the history.
-    await add_to_history(user_input, reply)
+    session_id = await add_to_history(user_input, reply, session_id)
     # Print the response.
     if '```' in reply: # Response has a code block.
         reply = await code_block(reply)
         print(reply)
     else:
         print(colored(reply, "white"))
+    return session_id
 
 
 async def code_block(reply):
