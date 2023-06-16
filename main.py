@@ -106,7 +106,6 @@ async def load_file(path):
 async def send_prompt(user_input, session_id):
     user_input = user_input.replace("\\n", "\n") # Replace \n with newlines.
     # Send history with attached prompt to the API.
-
     history = await get_history(session_id)
     
     prompt = f"{history}\n### Human\n{user_input}\n### Assistant\n"

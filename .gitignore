@@ -1,7 +1,6 @@
-chats
+chats/
 __pycache__/
+logs/
 log*.txt
-chats/*.txt
 Thumbs.db
 xvba_debug.log
-```
