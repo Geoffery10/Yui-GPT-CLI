@@ -1,0 +1,20 @@
+{
+    "server": "192.168.0.186",
+    "params": {
+        "max_new_tokens": 500,
+        "do_sample": true,
+        "temperature": 1.99,
+        "top_p": 0.18,
+        "typical_p": 1,
+        "repetition_penalty": 1.15,
+        "encoder_repetition_penalty": 1.0,
+        "top_k": 30,
+        "min_length": 1,
+        "no_repeat_ngram_size": 0,
+        "num_beams": 1,
+        "penalty_alpha": 0,
+        "length_penalty": 1,
+        "early_stopping": true,
+        "seed": -1
+    }
+}

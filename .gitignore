@@ -1,0 +1,7 @@
+chats
+__pycache__/
+log*.txt
+chats/*.txt
+Thumbs.db
+xvba_debug.log
+```
