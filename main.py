@@ -48,6 +48,7 @@ async def print_help():
     print(colored("Type " + colored("'!load <chat number>'", "light_yellow") + " to load a chat.", "white"))
     print(colored("Type " + colored("'!retry'", "light_yellow") + " to retry the last prompt.", "white"))
     print(colored("Type " + colored("'!file <file name> <question>'", "light_yellow") + " to load a file and ask a question about it.", "white"))
+    print(colored("Type " + colored("'!delete <chat number>'", "light_yellow") + " to delete a chat. (Use \"*\" for all)", "white"))
     print(colored("Type " + colored("'!help'", "light_yellow") + " to print this message again.", "white"))
 
 
@@ -104,6 +105,24 @@ async def main():
                 session_id = await send_prompt(final_question, session_id)
             else:
                 print(colored("Error: File not found.", "red"))
+        elif "!delete" in user_input:
+                # Get the chat number from the user input.
+                chat_number = user_input.split(" ")[1]
+                # Parse the chat number.
+                if chat_number == "all" or chat_number == "*" or chat_number == "-1":
+                    await delete_chat(-1)
+                    await clear_history()
+                else:
+                    try:
+                        chat_number = int(chat_number)
+                    except:
+                        print(colored("Error: Invalid chat number.", "red"))
+                        continue
+                    await delete_chat(chat_number)
+                    if session_id == chat_number:
+                        await clear_history()
+                        session_id = await get_next_chat_id()
+                        await print_header(session_id)
         elif user_input == "": # Empty input.
             continue
         else:

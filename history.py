@@ -1,5 +1,6 @@
 # This python file manages chat history for the CLI.
 from termcolor import colored
+import os
 
 chat_name = "./chats/chat_0.txt"
 
@@ -64,14 +65,12 @@ async def print_history(id = -1):
 
 async def get_next_chat_id():
     # Count files in ./chats/ directory. to find the number of chats.
-    import os
     chats = os.listdir("./chats/")
     chats = [chat for chat in chats if chat.endswith(".txt")]
     return len(chats)
 
 async def chat_exists(id):
     # Check if chat file exists.
-    import os
     chats = os.listdir("./chats/")
     if not chats:
         return False
@@ -93,7 +92,6 @@ async def create_history():
 
 async def load_chat(id = 0):
     looking_for = f"chat_{id}.txt"
-    import os
     chats = os.listdir("./chats/")
     print(chats)
     if looking_for in chats:
@@ -140,3 +138,18 @@ async def remove_last_messages(id):
     history_file.close()
     return
     
+async def delete_chat(id):
+    # Delete the chat file.
+    if id == -1: # Delete all
+        chats = os.listdir("./chats/")
+        chats = [chat for chat in chats if chat.endswith(".txt")]
+        for chat in chats:
+            os.remove(f"./chats/{chat}")
+        print(colored("All chats deleted.", "yellow"))
+    else:
+        if await chat_exists(id):
+            os.remove(f"./chats/chat_{id}.txt")
+            print(colored(f"Chat {id} deleted.", "yellow"))
+        else:
+            print(colored("Chat doesn't exist.", "red"))
+    return
