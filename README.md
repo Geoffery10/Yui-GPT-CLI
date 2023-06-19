@@ -2,7 +2,7 @@
 
 [![Pipeline](https://img.shields.io/github/actions/workflow/status/Geoffery10/Yui-GPT-CLI/test.yml)](https://github.com/Geoffery10/Yui-GPT-CLI/actions/workflows/test.yml)
 
-Yui-GPT CLI is a command-line interface tool that uses AI throught the [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) api to generate text. 
+Yui-GPT CLI is a command-line interface tool that uses AI throught the [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) api to generate text.
 
 ## Installation
 
@@ -17,15 +17,16 @@ Yui-GPT CLI is a command-line interface tool that uses AI throught the [oobaboog
 
 Simply enter text after `Enter a prompt:` to ask the AI a question.
 
-Addionally you can use: 
+Addionally you can use:
 
 * Type '!quit' to exit the program.
 * Type '!clear' to clear the chat history.
 * Type '!history' to print the chat history.
-* Type '!help' to print this message again.
 * Type '!load `<chat number>`' to load a chat.
 * Type '!retry' to retry the last prompt.
 * Type '!file `<file name>` `<question>`' to load a file and ask a question about it.
+* Type '!delete `<chat number>` to delete a chat. (Use \"*\" for all)
+* Type '!help' to print this message again.
 
 ## License
 
