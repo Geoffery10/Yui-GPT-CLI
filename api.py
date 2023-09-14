@@ -3,18 +3,8 @@ import requests
 import asyncio
 
 
-async def api_call(history, prompt, negative_prompt=""):
-    # Load config file
-    with open('server_info.json', 'r') as f:
-        config = json.load(f)
-
-    # Server address
-    server = config['server']
-    
+async def setup_params(config, prompt, negative_prompt):
     params = config['params']
-
-    # Generation parameters
-    # params = config['params']
     request = {
         'prompt': prompt,
         'max_new_tokens': params['max_new_tokens'],
@@ -54,9 +44,20 @@ async def api_call(history, prompt, negative_prompt=""):
         'skip_special_tokens': params['skip_special_tokens'],
         'stopping_strings': params['stopping_strings'],
     }
+    return request
+    
 
+async def api_call(history, prompt, negative_prompt=""):
+    # Load config file
+    with open('server_info.json', 'r') as f:
+        config = json.load(f)
+    server = config['server']
+    request = await setup_params(config, prompt, negative_prompt)
+    
+    # Send request to server
     response = requests.post(server, json=request)
     
+    # Parse response
     if response.status_code == 200:
         reply = response.json()['results'][0]['text']
     elif response.status_code == 400:
@@ -68,14 +69,16 @@ async def api_call(history, prompt, negative_prompt=""):
         print(response.json()['results'][0])
         return 'Sorry, I don\'t know what to say. 😳'
 
+    return await getNewMessages(prompt, history, reply)
+
+
+async def getNewMessages(prompt, history, reply, username="Assistant"):
     reply = reply.replace(prompt, "")
     reply = reply.replace(history, "")
 
     # Remove anything after ### Human
     reply = reply.split("### Human")[0]
-
     return reply
-
 
 async def main():
     prompt = "### Human\nHello, how are you?\n### Assistant\n"
